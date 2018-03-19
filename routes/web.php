@@ -10,8 +10,8 @@ Route::get('about', function () {
     return view('other.about');
 })->name('other.about');
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('', 'PostController@getAdminIndex')->name('admin.index');
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+    Route::get('', 'PostController@getAdminIndex')->name('admin.index')->middleware('auth');
     
     Route::get('create', 'PostController@getAdminCreate')->name('admin.create');
     
@@ -23,3 +23,7 @@ Route::group(['prefix' => 'admin'], function () {
     
     Route::post('edit', 'PostController@postAdminUpdate')->name('admin.update');
 });
+
+Auth::routes();
+
+Route::post('login', 'SigninController@signin')->name('auth.signin');
